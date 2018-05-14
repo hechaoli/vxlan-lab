@@ -1,0 +1,26 @@
+version: '2'
+services:
+    hv1:
+        image: ovs-vtep-emulator:2.9.0
+        # Keep the container running afte start
+        entrypoint: ["/bin/bash", "-c", "/start_ovs.sh && tail -f /dev/null"]
+        privileged: true
+        networks:
+            underlay:
+                ipv4_address: 10.0.0.1
+    hv2:
+        image: ovs-vtep-emulator:2.9.0
+        # Keep the container running afte start
+        entrypoint: ["/bin/bash", "-c", "/start_ovs.sh && tail -f /dev/null"]
+        privileged: true
+        networks:
+            underlay:
+                ipv4_address: 10.1.0.1
+
+networks:
+    underlay:
+        driver: bridge
+        ipam:
+            config:
+                - subnet: 10.0.0.0/8
+                  gateway: 10.0.0.254
